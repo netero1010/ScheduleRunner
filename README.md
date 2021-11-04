@@ -82,7 +82,7 @@ A number of C# tools were already developed to simulate the attack using schedul
 ### Examples
 **Create a scheduled task called "Cleanup" that will be executed every day at 11:30 p.m.**
 
-`ScheduleRunner.exe /method:create /taskname:Cleanup /trigger:daily /starttime:23:30 /program:calc.exe /description:"Some wordings"` /author:netero1010
+`ScheduleRunner.exe /method:create /taskname:Cleanup /trigger:daily /starttime:23:30 /program:calc.exe /description:"Some wordings" /author:netero1010`
 
 **Create a scheduled task called "Cleanup" that will be executed every 4 hours on a remote server**
 
