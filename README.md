@@ -2,7 +2,7 @@
 ----
 Scheduled task is one of the most popular attack technique in the past decade and now it is still commonly used by hackers/red teamers for persistence and lateral movement. 
 
-A number of C# tools were already developed to simulate the attack using scheduled task. I have been playing around with some of them but each of them has its own limitations on customizing the scheduled task. Therefore, this project aims to provide a C# tool to include the features that I want and provide enough flexibility on customizing the scheduled task.
+A number of C# tools were already developed to simulate the attack using scheduled task. I have been playing around with some of them but each of them has its own limitations on customizing the scheduled task. Therefore, this project aims to provide a C# tool (CobaltStrike execute-assembly friendly) to include the features that I need and provide enough flexibility on customizing the scheduled task.
 
 ### Screenshot:
 
