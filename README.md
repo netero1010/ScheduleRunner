@@ -4,11 +4,11 @@ Scheduled task is one of the most popular attack technique in the past decade an
 
 A number of C# tools were already developed to simulate the attack using scheduled task. I have been playing around with some of them but each of them has its own limitations on customizing the scheduled task. Therefore, this project aims to provide a C# tool (CobaltStrike execute-assembly friendly) to include the features that I need and provide enough flexibility on customizing the scheduled task.
 
-### Screenshot:
+## Screenshot:
 
 ![HowTo](https://github.com/netero1010/ScheduleRunner/raw/main/screenshot.png)
 
-### Methods (/method):
+## Methods (/method):
 |  Method | Function  |
 | ------------ | ------------ |
 | create | Create a new scheduled task |
@@ -18,7 +18,7 @@ A number of C# tools were already developed to simulate the attack using schedul
 | queryfolders | Query all sub-folders in scheduled task  |
 | move | Perform lateral movement using scheduled task (automatically create, run and delete) |
 
-### Options for scheduled task creation (/method:create):
+## Options for scheduled task creation (/method:create):
 |  Method | Function  |
 | ------------ | ------------ |
 | [*] /taskname | Specify the name of the scheduled task |
@@ -36,7 +36,7 @@ A number of C# tools were already developed to simulate the attack using schedul
 
 [*] are mandatory fields.
 
-### Options for scheduled task deletion (/method:delete):
+## Options for scheduled task deletion (/method:delete):
 |  Method | Function  |
 | ------------ | ------------ |
 | [*] /taskname | Specify the name of the scheduled task |
@@ -46,7 +46,7 @@ A number of C# tools were already developed to simulate the attack using schedul
 
 [*] are mandatory fields.
 
-### Options for scheduled task execution (/method:run):
+## Options for scheduled task execution (/method:run):
 |  Method | Function  |
 | ------------ | ------------ |
 | [*] /taskname | Specify the name of the scheduled task |
@@ -55,7 +55,7 @@ A number of C# tools were already developed to simulate the attack using schedul
 
 [*] are mandatory fields.
 
-### Options for scheduled task query (/method:query):
+## Options for scheduled task query (/method:query):
 |  Method | Function  |
 | ------------ | ------------ |
 | /taskname | Specify the name of the scheduled task |
@@ -64,7 +64,7 @@ A number of C# tools were already developed to simulate the attack using schedul
 
 [*] are mandatory fields.
 
-### Options for scheduled task lateral movement (/method:move):
+## Options for scheduled task lateral movement (/method:move):
 |  Method | Function  |
 | ---------------- | ---------------- |
 | [*] /taskname | Specify the name of the scheduled task |
@@ -81,7 +81,7 @@ A number of C# tools were already developed to simulate the attack using schedul
 
 [*] are mandatory fields.
 
-### Example
+## Example
 **Create a scheduled task called "Cleanup" that will be executed every day at 11:30 p.m.**
 
 `ScheduleRunner.exe /method:create /taskname:Cleanup /trigger:daily /starttime:23:30 /program:calc.exe /description:"Some description" /author:netero1010`
@@ -122,8 +122,7 @@ A number of C# tools were already developed to simulate the attack using schedul
 
 `ScheduleRunner.exe /method:delete /taskname:Cleanup /technique:hide`
 
-
-### Library and Reference Used:
+## Library and Reference Used:
 | Library | Link |
 | ------------ | ------------ |
 | TaskScheduler | https://github.com/dahall/TaskScheduler |
