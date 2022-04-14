@@ -1,12 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace ScheduleRunner
 {
     public class Helper
     {
-        public static Dictionary<string, string> ParseArgs(string[] args)
-        {
+        public static Dictionary<string, string> ParseArgs(string[] args) {
             try
             {
                 Dictionary<string, string> ret = new Dictionary<string, string>();
@@ -19,7 +18,6 @@ namespace ScheduleRunner
                 Console.WriteLine("[X] Your command is wrong. Please check help page.");
                 return null;
             }
-
         }
 
         public static void Banner() {
@@ -31,7 +29,7 @@ namespace ScheduleRunner
             Console.WriteLine(@"|  ___/ / /__/ / / /  __/ /_/ / /_/ / /  __/ _, _/ /_/ / / / / / / /  __/ /     |");
             Console.WriteLine(@"| /____/\___/_/ /_/\___/\__,_/\__,_/_/\___/_/ |_|\__,_/_/ /_/_/ /_/\___/_/      |");
             Console.WriteLine(@"|                                                                               |");
-            Console.WriteLine(@"| Version: 1.0                                                                  |");
+            Console.WriteLine(@"| Version: 1.1                                                                  |");
             Console.WriteLine(@"|  Author: Chris Au                                                             |");
             Console.WriteLine(@"| Twitter: @netero_1010                                                         |");
             Console.WriteLine(@"|  Github: @netero1010                                                          |");
@@ -47,7 +45,7 @@ namespace ScheduleRunner
             Console.WriteLine(@"    delete        - Delete an existing scheduled task");
             Console.WriteLine(@"    run           - Execute an existing scheduled task");
             Console.WriteLine(@"    query         - Query details for a scheduled task or all scheduled tasks under a folder");
-            Console.WriteLine(@"    queryfolders  - Query all sub-folders in scheduled task");
+            Console.WriteLine(@"    queryfolders  - Query all sub-folders in scheduled task recursively");
             Console.WriteLine(@"    move          - Perform lateral movement using scheduled task (automatically create, run and delete)");
             Console.WriteLine(@"");
             Console.WriteLine(@"[*] are mandatory fields.");
@@ -65,12 +63,18 @@ namespace ScheduleRunner
             Console.WriteLine(@"    /description      - Specify the description for the scheduled task");
             Console.WriteLine(@"    /remoteserver     - Specify the hostname or IP address of a remote computer");
             Console.WriteLine(@"    /user             - Run the task with a specified user account");
+            Console.WriteLine(@"    /technique        - Specify evasion technique:");
+            Console.WriteLine(@"                        ""hide"": A technique used by HAFNIUM malware that will hide the scheduled task from ""/method:query"", ""schtasks /query"", and Task Scheduler");
+            Console.WriteLine(@"                        (This technique does not support remote execution due to privilege of remote registry. It requires ""NT AUTHORITY\SYSTEM"" and the task will continue to run until system reboot even after task deletion)");
             Console.WriteLine(@"");
             Console.WriteLine(@"Options for scheduled task deletion (/method:delete):");
             Console.WriteLine(@"");
             Console.WriteLine(@"    [*] /taskname     - Specify the name of the scheduled task");
             Console.WriteLine(@"    /folder           - Specify the folder where the scheduled task stores");
             Console.WriteLine(@"    /remoteserver     - Specify the hostname or IP address of a remote computer");
+            Console.WriteLine(@"    /technique        - Specify when the scheduled task was created using evasion technique:");
+            Console.WriteLine(@"                        ""hide"": Delete scheduled task that used ""hiding scheduled task"" technique");
+            Console.WriteLine(@"                        (The deletion requires ""NT AUTHORITY\SYSTEM"" and the task will continue to run until system reboot even after task deletion)");
             Console.WriteLine(@"");
             Console.WriteLine(@"Options for scheduled task execution (/method:run):");
             Console.WriteLine(@"");
@@ -98,10 +102,10 @@ namespace ScheduleRunner
             Console.WriteLine(@"    /description      - Specify the description for the scheduled task");
             Console.WriteLine(@"    /user             - Run the task with a specified user account");
             Console.WriteLine(@"");
-            Console.WriteLine(@"Examples:");
+            Console.WriteLine(@"Example:");
             Console.WriteLine(@"");
             Console.WriteLine(@"Create a scheduled task called ""Cleanup"" that will be executed every day at 11:30 p.m.:");
-            Console.WriteLine(@"    ScheduleRunner.exe /method:create /taskname:Cleanup /trigger:daily /starttime:23:30 /program:calc.exe /description:""Some wordings"" /author:netero1010");
+            Console.WriteLine(@"    ScheduleRunner.exe /method:create /taskname:Cleanup /trigger:daily /starttime:23:30 /program:calc.exe /description:""Some description"" /author:netero1010");
             Console.WriteLine(@"");
             Console.WriteLine(@"Create a scheduled task called ""Cleanup"" that will be executed every 4 hours on a remote server:");
             Console.WriteLine(@"    ScheduleRunner.exe /method:create /taskname:Cleanup /trigger:hourly /modifier:4 /program:rundll32.exe /argument:c:\temp\payload.dll /remoteserver:TARGET-PC01");
@@ -123,6 +127,14 @@ namespace ScheduleRunner
             Console.WriteLine(@"");
             Console.WriteLine(@"Perform lateral movement using scheduled task to a remote server using a specific user account:");
             Console.WriteLine(@"    ScheduleRunner.exe /method:move /taskname:Demo /remoteserver:TARGET-PC01 /program:rundll32.exe /argument:c:\temp\payload.dll /user:netero1010");
+            Console.WriteLine(@"");
+            Console.WriteLine(@"Technique - hide:");
+            Console.WriteLine(@"");
+            Console.WriteLine(@"Create a scheduled task called ""Cleanup"" using hiding scheduled task technique:");
+            Console.WriteLine(@"    ScheduleRunner.exe /method:create /taskname:Cleanup /trigger:daily /starttime:23:30 /program:calc.exe /description:""Some description"" /author:netero1010 /technique:hide");
+            Console.WriteLine(@"");
+            Console.WriteLine(@"Delete a scheduled task called ""Cleanup"" that used hiding scheduled task technique:");
+            Console.WriteLine(@"    ScheduleRunner.exe /method:delete /taskname:Cleanup /technique:hide");
         }
     }
 }
