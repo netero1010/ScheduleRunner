@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace ScheduleRunner
 {
@@ -16,9 +16,9 @@ namespace ScheduleRunner
         private static string modifier = null;
         private static string startTime = null;
         private static string remoteServer = null;
+        private static bool hide = false;
 
-        static void Main(string[] args)
-        {
+        static void Main(string[] args) {
             if (args.Length > 0)
             {
                 if (args[0] == "/help" || args[0] == "-h" || args[0] == "/h" || args[0] == "help")
@@ -53,7 +53,14 @@ namespace ScheduleRunner
                     startTime = argsParam["starttime"];
                 if (argsParam.ContainsKey("remoteserver"))
                     remoteServer = argsParam["remoteserver"];
-                new TaskManager(method, taskName, folder, author, description, trigger, program, agrument, user, modifier, startTime, remoteServer);
+                if (argsParam.ContainsKey("technique"))
+                {
+                    string technique = argsParam["technique"];
+                    if (technique.Contains("hide"))
+                        hide = true;
+                }
+
+                new TaskManager(method, taskName, folder, author, description, trigger, program, agrument, user, modifier, startTime, remoteServer, hide);
             }
             else
             {
