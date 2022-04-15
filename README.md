@@ -126,8 +126,8 @@ A number of C# tools were already developed to simulate the attack using schedul
 This technique was used by threat actor - HAFNIUM and discovered by Microsoft recently. It aims to make the scheduled task unqueriable by tools and unseeable by Task Scheduler.
 
 To use this technique, you are required to have "NT AUTHORITY/SYSTEM" and ScheduleRunner will do the following for you:
-1. Delete "SD" value from "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\<task name>"
-2. Delete scheduled task XML file "C:\Windows\System32\Tasks\<task name>"
+1. Delete "SD" value from "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\\[task name]"
+2. Delete scheduled task XML file "C:\Windows\System32\Tasks\\[task name]"
 
 To remove scheduled task that is created using this technique require to add "/technique:hide" in the delete method to remove it properly.
 
