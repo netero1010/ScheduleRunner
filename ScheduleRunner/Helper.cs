@@ -94,7 +94,7 @@ namespace ScheduleRunner
             Console.WriteLine(@"    [*] /program      - Specify the program that the task runs");
             Console.WriteLine(@"    [*] /remoteserver - Specify the hostname or IP address of a remote computer");
             Console.WriteLine(@"    /trigger          - Specify the schedule type. The valid values include: ""minute"", ""hourly"", ""daily"", ""weekly"", ""onstart"", ""onlogon"", and ""onidle""");
-            Console.WriteLine(@"    /modifier         - Specify how often the task runs within its schedule type. Applicable only for schedule type such as ""minute"" (e.g., 1-1439 minutes) and ""hourly"" (e.g., 1-23 hours)");
+            Console.WriteLine(@"    /modifier         - Specify how often the task runs within its schedule type. Applicable only for schedule type such as ""minute"" (e.g., 1-1439 minutes), ""hourly"" (e.g., 1-23 hours) and ""weekly"" (e.g., mon,sat,sun)");
             Console.WriteLine(@"    /starttime        - Specify the start time for daily schedule type (e.g., 23:30)");
             Console.WriteLine(@"    /argument         - Specify the command line argument for the program");
             Console.WriteLine(@"    /folder           - Specify the folder where the scheduled task stores (default: \)");
