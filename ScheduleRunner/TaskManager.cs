@@ -1,11 +1,13 @@
 using Microsoft.Win32;
 using Microsoft.Win32.TaskScheduler;
 using System;
+using System.Linq;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.AccessControl;
 using System.Security.Principal;
+using System.Collections.Generic;
 
 namespace ScheduleRunner
 {
@@ -252,11 +254,79 @@ namespace ScheduleRunner
                 TaskDefinition td = ts.NewTask();
 
                 // Define trigger
-                if (trigger.Equals("daily"))
+                if (trigger.Equals("weekly"))
                 {
                     if (startTime == null)
                     {
-                        Console.WriteLine("[-] Error: The modifier is not defined. Please try again. For example, \"/starttime:23:30\" to repeat the task daily at 11:30pm.");
+                        Console.WriteLine("[-] Error: The starttime is not defined. Please try again. For example, \"/starttime:23:30\" to repeat the task daily at 11:30pm.");
+                        return null;
+                    }
+                    if (modifier == null)
+                    {
+                        Console.WriteLine("[-] Error: The modifier is not defined. Please try again. For example, use \"/modifier:mon,sat,sun\" to repeat the task every Monday, Saturday and Sunday.");
+                        return null;
+                    }
+                    try
+                    {
+                        List<string> daysofweekmodifier = modifier.Split(',').ToList();
+                        DaysOfTheWeek daysofweek = 0;
+                        foreach (string day in daysofweekmodifier)
+                        {
+                            switch (day.ToLower())
+                            {
+                                case "mon":
+                                case "monday":
+                                    daysofweek += 2;
+                                    break;
+                                case "tue":
+                                case "tuesday":
+                                    daysofweek += 4;
+                                    break;
+                                case "wed":
+                                case "wednesday":
+                                    daysofweek += 8;
+                                    break;
+                                case "thurs":
+                                case "thursday":
+                                    daysofweek += 16;
+                                    break;
+                                case "fri":
+                                case "friday":
+                                    daysofweek += 32;
+                                    break;
+                                case "sat":
+                                case "saturday":
+                                    daysofweek += 64;
+                                    break;
+                                case "sun":
+                                case "sunday":
+                                    daysofweek += 1;
+                                    break;
+                            }
+                        }
+                        if (daysofweek == 0)
+                        {
+                            Console.WriteLine("[-] Error: The format of the \"/modifier:\" parameter is incorrect. Please try again. For example, use \"/modifier:mon,sat,sun\" to repeat the task every Monday, Saturday and Sunday.");
+                            return null;
+                        }
+                        int hour = Int16.Parse(startTime.Split(':')[0]);
+                        int minute = Int16.Parse(startTime.Split(':')[1]);
+                        WeeklyTrigger dt = new WeeklyTrigger();
+                        dt.StartBoundary = DateTime.Today + TimeSpan.FromHours(hour) + TimeSpan.FromMinutes(minute);
+                        dt.DaysOfWeek = daysofweek;
+                        td.Triggers.Add(dt);
+                    }
+                    catch (FormatException)
+                    {
+                        Console.WriteLine("[-] Error: Wrong time format for \"/starttime:\" or \"/modifier:\". Please try again. For example, use \"/starttime:23:30\" \"/modifier:mon,sat,sun to repeat the task every Monday, Saturday, and Sunday at 11:30pm.");
+                        return null;
+                    }
+                }
+                else if (trigger.Equals("daily"))
+                {
+                    if (startTime == null)
+                    {
+                        Console.WriteLine("[-] Error: The starttime is not defined. Please try again. For example, \"/starttime:23:30\" to repeat the task daily at 11:30pm.");
                         return null;
                     }
                     try
@@ -370,7 +440,14 @@ namespace ScheduleRunner
                 if (e is UnauthorizedAccessException)
                     Console.WriteLine("[-] Error: You do not have sufficient permission to create the scheduled task.");
                 else if (e is COMException)
-                    Console.WriteLine("[-] Error: The user name could not be found.");
+                {
+                    if (e.HResult.ToString("x") == "800706b5")
+                        Console.WriteLine("[-] Error: The interface is unknown. Probably the Schedule service is down?");
+                    else if (e.HResult.ToString("x") == "80070534")
+                        Console.WriteLine("[-] Error: The user name could not be found.");
+                    else
+                        Console.WriteLine("[-] Error: " + e.Message);
+                }
                 else
                     Console.WriteLine("[-] Error: Error when creating the scheduled task. Please check your parameters again.");
                 return null;
