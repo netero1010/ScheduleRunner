@@ -23,8 +23,8 @@ A number of C# tools were already developed to simulate the attack using schedul
 | ------------ | ------------ |
 | [*] /taskname | Specify the name of the scheduled task |
 | [*] /program | Specify the program that the task runs |
-| [*] /trigger | Specify the schedule type. The valid values include: "minute", "hourly", "daily", "onstart", "onlogon", "onidle" |
-| /modifier | Specify how often the task runs within its schedule type. Applicable only for schedule type such as "minute" (e.g., 1-1439 minutes) and "hourly" (e.g., 1-23 hours) |
+| [*] /trigger | Specify the schedule type. The valid values include: "minute", "hourly", "daily", "weekly", "onstart", "onlogon", and "onidle" |
+| /modifier | Specify how often the task runs within its schedule type. Applicable only for schedule type such as "minute" (e.g., 1-1439 minutes), "hourly" (e.g., 1-23 hours) and "weekly" (e.g., mon,sat,sun) |
 | /starttime | Specify the start time for daily schedule type (e.g., 23:30) |
 | /argument | Specify the command line argument for the program |
 | /folder | Specify the folder where the scheduled task stores (default: \\) |
@@ -70,8 +70,8 @@ A number of C# tools were already developed to simulate the attack using schedul
 | [*] /taskname | Specify the name of the scheduled task |
 | [*] /program | Specify the program that the task runs |
 | [*] /remoteserver | Specify the hostname or IP address of a remote computer |
-| /trigger | Specify the schedule type. The valid values include: "minute", "hourly", "daily", "onstart", "onlogon", "onidle" |
-| /modifier | Specify how often the task runs within its schedule type. Applicable only for schedule type such as "minute" (e.g., 1-1439 minutes) and "hourly" (e.g., 1-23 hours) |
+| /trigger | Specify the schedule type. The valid values include: "minute", "hourly", "daily", "weekly", "onstart", "onlogon", and "onidle" |
+| /modifier | Specify how often the task runs within its schedule type. Applicable only for schedule type such as "minute" (e.g., 1-1439 minutes), "hourly" (e.g., 1-23 hours) and "weekly" (e.g., mon,sat,sun) |
 | /starttime | Specify the start time for daily schedule type (e.g., 23:30) |
 | /argument | Specify the command line argument for the program |
 | /folder | Specify the folder where the scheduled task stores (default: \\) |
