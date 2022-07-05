@@ -279,6 +279,7 @@ namespace ScheduleRunner
                                     daysofweek += 2;
                                     break;
                                 case "tue":
+                                case "tues":
                                 case "tuesday":
                                     daysofweek += 4;
                                     break;
@@ -286,6 +287,8 @@ namespace ScheduleRunner
                                 case "wednesday":
                                     daysofweek += 8;
                                     break;
+                                case "thu":
+                                case "thur":
                                 case "thurs":
                                 case "thursday":
                                     daysofweek += 16;
