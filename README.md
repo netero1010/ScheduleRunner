@@ -28,6 +28,7 @@ A number of C# tools were already developed to simulate the attack using schedul
 | /starttime | Specify the start time for daily schedule type (e.g., 23:30) |
 | /argument | Specify the command line argument for the program |
 | /folder | Specify the folder where the scheduled task stores (default: \\) |
+| /workingdir | Specify the working directory in which the scheduled task will be executed |
 | /author | Specify the author of the scheduled task |
 | /description | Specify the description for the scheduled task |
 | /remoteserver | Specify the hostname or IP address of a remote computer |
@@ -75,6 +76,7 @@ A number of C# tools were already developed to simulate the attack using schedul
 | /starttime | Specify the start time for daily schedule type (e.g., 23:30) |
 | /argument | Specify the command line argument for the program |
 | /folder | Specify the folder where the scheduled task stores (default: \\) |
+| /workingdir | Specify the working directory in which the scheduled task will be executed |
 | /author | Specify the author of the scheduled task |
 | /description | Specify the description for the scheduled task |
 | /user | Run the task with a specified user account |

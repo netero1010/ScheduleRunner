@@ -7,6 +7,7 @@ namespace ScheduleRunner
         private static string method = null;
         private static string taskName = null;
         private static string folder = null;
+        private static string workingDirectory = null;
         private static string author = null;
         private static string description = null;
         private static string trigger = null;
@@ -35,6 +36,8 @@ namespace ScheduleRunner
                     taskName = argsParam["taskname"];
                 if (argsParam.ContainsKey("folder"))
                     folder = argsParam["folder"];
+                if (argsParam.ContainsKey("workingdir"))
+                    workingDirectory = argsParam["workingdir"];
                 if (argsParam.ContainsKey("author"))
                     author = argsParam["author"];
                 if (argsParam.ContainsKey("description"))
@@ -60,7 +63,7 @@ namespace ScheduleRunner
                         hide = true;
                 }
 
-                new TaskManager(method, taskName, folder, author, description, trigger, program, agrument, user, modifier, startTime, remoteServer, hide);
+                new TaskManager(method, taskName, folder, workingDirectory, author, description, trigger, program, agrument, user, modifier, startTime, remoteServer, hide);
             }
             else
             {

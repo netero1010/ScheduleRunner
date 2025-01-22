@@ -17,12 +17,12 @@ namespace ScheduleRunner
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern int Wow64DisableWow64FsRedirection(ref IntPtr ptr);
 
-        public TaskManager(String method, String taskName, String folder, String author, String description, String trigger, String program, String argument, String user, String modifier, String startTime, String remoteServer, bool hide) {
+        public TaskManager(String method, String taskName, String folder, String workingDirectory, String author, String description, String trigger, String program, String argument, String user, String modifier, String startTime, String remoteServer, bool hide) {
             Helper.Banner();
             try
             {
                 if (method.ToLower().Equals("create"))
-                    CreateScheduledTask(taskName, folder, author, description, trigger, program, argument, user, modifier, startTime, remoteServer, hide);
+                    CreateScheduledTask(taskName, folder, workingDirectory, author, description, trigger, program, argument, user, modifier, startTime, remoteServer, hide);
                 else if (method.ToLower().Equals("delete"))
                     RemoveScheduledTask(taskName, folder, remoteServer, null, hide);
                 else if (method.ToLower().Equals("run"))
@@ -32,7 +32,7 @@ namespace ScheduleRunner
                 else if (method.ToLower().Equals("queryfolders"))
                     ListAllFolders(remoteServer);
                 else if (method.ToLower().Equals("move"))
-                    LateralMovement(taskName, folder, author, description, trigger, program, argument, user, modifier, startTime, remoteServer);
+                    LateralMovement(taskName, folder, workingDirectory, author, description, trigger, program, argument, user, modifier, startTime, remoteServer);
                 else
                     Console.WriteLine("[-] Error: Unknown method.");
             }
@@ -185,7 +185,7 @@ namespace ScheduleRunner
             }
         }
 
-        TaskService CreateScheduledTask(String taskName, String folder, String author, String description, String trigger, String program, String argument, String user, String modifier, String startTime, String remoteServer, bool hide) {
+        TaskService CreateScheduledTask(String taskName, String folder, String workingDirectory, String author, String description, String trigger, String program, String argument, String user, String modifier, String startTime, String remoteServer, bool hide) {
             try
             {
                 // Check key parameters
@@ -408,11 +408,12 @@ namespace ScheduleRunner
                 }
 
                 // Add command line argument
-                td.Actions.Add(program, argument, null);
+                td.Actions.Add(program, argument, workingDirectory);
 
                 // Setting for the scheduled task
                 td.Settings.DisallowStartIfOnBatteries = false;
                 td.Settings.StopIfGoingOnBatteries = false;
+                td.Settings.StartWhenAvailable = true;
                 td.Settings.Enabled = true;
                 td.RegistrationInfo.Description = description;
                 td.RegistrationInfo.Author = author;
@@ -766,7 +767,7 @@ namespace ScheduleRunner
             }
         }
 
-        void LateralMovement(String taskName, String folder, String author, String description, String trigger, String program, String argument, String user, String modifier, String startTime, String remoteServer) {
+        void LateralMovement(String taskName, String folder, String workingDirectory, String author, String description, String trigger, String program, String argument, String user, String modifier, String startTime, String remoteServer) {
             if (remoteServer == null || taskName == null || program == null)
             {
                 Console.WriteLine("[-] Error: Missing parameters. \"/remoteserver, /taskname, /program\" must be defined. Please try again.");
@@ -774,7 +775,7 @@ namespace ScheduleRunner
             }
             if (trigger == null)
                 trigger = "onlogon";
-            TaskService ts = CreateScheduledTask(taskName, folder, author, description, trigger, program, argument, user, modifier, startTime, remoteServer, false);
+            TaskService ts = CreateScheduledTask(taskName, folder, workingDirectory, author, description, trigger, program, argument, user, modifier, startTime, remoteServer, false);
             if (ts != null)
             {
                 RunScheduledTask(taskName, folder, remoteServer, ts);

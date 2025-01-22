@@ -29,7 +29,7 @@ namespace ScheduleRunner
             Console.WriteLine(@"|  ___/ / /__/ / / /  __/ /_/ / /_/ / /  __/ _, _/ /_/ / / / / / / /  __/ /     |");
             Console.WriteLine(@"| /____/\___/_/ /_/\___/\__,_/\__,_/_/\___/_/ |_|\__,_/_/ /_/_/ /_/\___/_/      |");
             Console.WriteLine(@"|                                                                               |");
-            Console.WriteLine(@"| Version: 1.2                                                                  |");
+            Console.WriteLine(@"| Version: 1.3                                                                  |");
             Console.WriteLine(@"|  Author: Chris Au                                                             |");
             Console.WriteLine(@"| Twitter: @netero_1010                                                         |");
             Console.WriteLine(@"|  Github: @netero1010                                                          |");
@@ -59,6 +59,7 @@ namespace ScheduleRunner
             Console.WriteLine(@"    /starttime        - Specify the start time for daily schedule type (e.g., 23:30)");
             Console.WriteLine(@"    /argument         - Specify the command line argument for the program");
             Console.WriteLine(@"    /folder           - Specify the folder where the scheduled task stores (default: \)");
+            Console.WriteLine(@"    /workingdir       - Specify the working directory in which the scheduled task will be executed");
             Console.WriteLine(@"    /author           - Specify the author of the scheduled task");
             Console.WriteLine(@"    /description      - Specify the description for the scheduled task");
             Console.WriteLine(@"    /remoteserver     - Specify the hostname or IP address of a remote computer");
@@ -98,6 +99,7 @@ namespace ScheduleRunner
             Console.WriteLine(@"    /starttime        - Specify the start time for daily schedule type (e.g., 23:30)");
             Console.WriteLine(@"    /argument         - Specify the command line argument for the program");
             Console.WriteLine(@"    /folder           - Specify the folder where the scheduled task stores (default: \)");
+            Console.WriteLine(@"    /workingdir       - Specify the working directory in which the scheduled task will be executed");
             Console.WriteLine(@"    /author           - Specify the author of the scheduled task");
             Console.WriteLine(@"    /description      - Specify the description for the scheduled task");
             Console.WriteLine(@"    /user             - Run the task with a specified user account");
