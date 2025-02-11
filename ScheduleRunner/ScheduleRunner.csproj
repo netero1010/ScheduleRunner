@@ -48,14 +48,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- Aggiungi i pacchetti NuGet necessari per il progetto -->
     <PackageReference Include="Costura.Fody" Version="5.6.0" />
     <PackageReference Include="TaskScheduler" Version="2.9.2" />
-    <!-- Aggiungi altre dipendenze qui se necessario -->
   </ItemGroup>
 
   <ItemGroup>
-    <!-- I file di codice sorgente del progetto -->
     <Compile Include="Helper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -63,7 +60,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- I file di configurazione del progetto -->
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
