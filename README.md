@@ -1,150 +1,181 @@
-# ScheduleRunner - A C# tool with more flexibility to customize scheduled task for both persistence and lateral movement in red team operation
-----
-Scheduled task is one of the most popular attack technique in the past decade and now it is still commonly used by hackers/red teamers for persistence and lateral movement. 
+# ScheduleRunner: A Flexible C# Tool for Red Team Operations
 
-A number of C# tools were already developed to simulate the attack using scheduled task. I have been playing around with some of them but each of them has its own limitations on customizing the scheduled task. Therefore, this project aims to provide a C# tool (CobaltStrike execute-assembly friendly) to include the features that I need and provide enough flexibility on customizing the scheduled task.
+**ScheduleRunner** is a versatile tool for creating, managing, and evading scheduled tasks during red team operations. Designed with flexibility in mind, this C# tool provides customizations not available in other existing tools, making it ideal for **persistence** and **lateral movement** tactics. It is compatible with **CobaltStrike execute-assembly**, allowing for seamless integration into offensive security workflows.
 
-## Screenshot:
+![C#](https://img.shields.io/badge/Language-C%23-Blue)
+
+## Features
+
+- **Create** and manage scheduled tasks with full customization.
+- **Lateral Movement**: Automatically create, run, and delete tasks on remote systems.
+- **Evasion**: Use advanced techniques to hide scheduled tasks from detection tools like Task Scheduler.
+- **Remote Execution**: Run tasks on remote servers to extend your attack surface.
+
+## Screenshot
 
 ![HowTo](https://github.com/netero1010/ScheduleRunner/raw/main/screenshot.png)
 
-## Methods (/method):
-|  Method | Function  |
-| ------------ | ------------ |
-| create | Create a new scheduled task |
-| delete | Delete an existing scheduled task |
-| run | Execute an existing scheduled task |
-| query | Query details for a scheduled task or all scheduled tasks under a folder |
-| queryfolders | Query all sub-folders in scheduled task  |
-| move | Perform lateral movement using scheduled task (automatically create, run and delete) |
+## Table of Contents
 
-## Options for scheduled task creation (/method:create):
-|  Method | Function  |
-| ------------ | ------------ |
-| [*] /taskname | Specify the name of the scheduled task |
-| [*] /program | Specify the program that the task runs |
-| [*] /trigger | Specify the schedule type. The valid values include: "minute", "hourly", "daily", "weekly", "onstart", "onlogon", and "onidle" |
-| /modifier | Specify how often the task runs within its schedule type. Applicable only for schedule type such as "minute" (e.g., 1-1439 minutes), "hourly" (e.g., 1-23 hours) and "weekly" (e.g., mon,sat,sun) |
-| /starttime | Specify the start time for daily schedule type (e.g., 23:30) |
-| /argument | Specify the command line argument for the program |
-| /folder | Specify the folder where the scheduled task stores (default: \\) |
-| /workingdir | Specify the working directory in which the scheduled task will be executed |
-| /author | Specify the author of the scheduled task |
-| /description | Specify the description for the scheduled task |
-| /remoteserver | Specify the hostname or IP address of a remote computer |
-| /user | Run the task with a specified user account |
-| /technique | Specify evasion technique:<br>- "hide": A technique used by HAFNIUM malware that will hide the scheduled task from task query<br><br>[!] https://www.microsoft.com/security/blog/2022/04/12/tarrask-malware-uses-scheduled-tasks-for-defense-evasion/<br>[!] This technique does not support remote execution due to privilege of remote registry. It requires "NT AUTHORITY\SYSTEM" and the task will continue to run until system reboot even after task deletion |
+- [Methods](#methods)
+- [Options for Task Creation](#options-for-scheduled-task-creation)
+- [Options for Task Deletion](#options-for-scheduled-task-deletion)
+- [Options for Task Execution](#options-for-scheduled-task-execution)
+- [Options for Task Query](#options-for-scheduled-task-query)
+- [Lateral Movement](#options-for-scheduled-task-lateral-movement)
+- [Example Usage](#example-usage)
+- [Hiding Scheduled Task Technique](#hiding-scheduled-task-technique)
+- [Libraries and References](#library-and-reference-used)
 
-[*] are mandatory fields.
+## Methods
 
-## Options for scheduled task deletion (/method:delete):
-|  Method | Function  |
-| ------------ | ------------ |
-| [*] /taskname | Specify the name of the scheduled task |
-| /folder | Specify the folder where the scheduled task stores (default: \\) |
-| /remoteserver | Specify the hostname or IP address of a remote computer |
-| /technique | Specify when the scheduled task was created using evasion technique:<br>- "hide": Delete scheduled task that used "hiding scheduled task" technique<br><br>[!] The deletion requires "NT AUTHORITY\SYSTEM" and the task will continue to run until system reboot even after task deletion |
+ScheduleRunner supports several methods for managing scheduled tasks:
 
-[*] are mandatory fields.
+| **Method**     | **Function**                                                              |
+| -------------- | ------------------------------------------------------------------------- |
+| `create`       | Create a new scheduled task                                                |
+| `delete`       | Delete an existing scheduled task                                          |
+| `run`          | Execute a specified scheduled task                                         |
+| `query`        | Retrieve details about a scheduled task or all tasks in a specific folder  |
+| `queryfolders` | List all sub-folders in the scheduled task library                         |
+| `move`         | Perform lateral movement by creating, running, and deleting tasks remotely |
 
-## Options for scheduled task execution (/method:run):
-|  Method | Function  |
-| ------------ | ------------ |
-| [*] /taskname | Specify the name of the scheduled task |
-| /folder | Specify the folder where the scheduled task stores (default: \\) |
-| /remoteserver | Specify the hostname or IP address of a remote computer |
+## Options for Scheduled Task Creation (/method:create)
 
-[*] are mandatory fields.
+Create a new scheduled task with various customizable options:
 
-## Options for scheduled task query (/method:query):
-|  Method | Function  |
-| ------------ | ------------ |
-| /taskname | Specify the name of the scheduled task |
-| /folder | Specify the folder where the scheduled task stores (default: \\) |
-| /remoteserver | Specify the hostname or IP address of a remote computer |
+| **Method**     | **Function**                                                              |
+| -------------- | ------------------------------------------------------------------------- |
+| [*] `/taskname` | The name of the scheduled task                                            |
+| [*] `/program`  | The program to run when the task executes                                 |
+| [*] `/trigger`  | The schedule type: `minute`, `hourly`, `daily`, `weekly`, `onstart`, `onlogon`, `onidle` |
+| `/modifier`     | Frequency modifier for certain schedule types (e.g., `1-1439 minutes` for `minute`, `1-23 hours` for `hourly`) |
+| `/starttime`    | Start time for daily schedules (e.g., `23:30`)                            |
+| `/argument`     | Command line arguments for the program                                   |
+| `/folder`       | Folder to store the scheduled task (default: `\\`)                        |
+| `/workingdir`   | Working directory for task execution                                     |
+| `/author`       | Author of the scheduled task                                              |
+| `/description`  | Description of the scheduled task                                        |
+| `/remoteserver` | Hostname or IP address of a remote computer                               |
+| `/user`         | User account to run the task                                              |
+| `/technique`    | Evasion technique (`hide` for hiding tasks from Task Scheduler)           |
 
-[*] are mandatory fields.
+### [*] Required Fields
 
-## Options for scheduled task lateral movement (/method:move):
-|  Method | Function  |
-| ---------------- | ---------------- |
-| [*] /taskname | Specify the name of the scheduled task |
-| [*] /program | Specify the program that the task runs |
-| [*] /remoteserver | Specify the hostname or IP address of a remote computer |
-| /trigger | Specify the schedule type. The valid values include: "minute", "hourly", "daily", "weekly", "onstart", "onlogon", and "onidle" |
-| /modifier | Specify how often the task runs within its schedule type. Applicable only for schedule type such as "minute" (e.g., 1-1439 minutes), "hourly" (e.g., 1-23 hours) and "weekly" (e.g., mon,sat,sun) |
-| /starttime | Specify the start time for daily schedule type (e.g., 23:30) |
-| /argument | Specify the command line argument for the program |
-| /folder | Specify the folder where the scheduled task stores (default: \\) |
-| /workingdir | Specify the working directory in which the scheduled task will be executed |
-| /author | Specify the author of the scheduled task |
-| /description | Specify the description for the scheduled task |
-| /user | Run the task with a specified user account |
+## Options for Scheduled Task Deletion (/method:delete)
 
-[*] are mandatory fields.
+Delete a specified scheduled task:
 
-## Example
-**Create a scheduled task called "Cleanup" that will be executed every day at 11:30 p.m.**
+| **Method**     | **Function**                                                              |
+| -------------- | ------------------------------------------------------------------------- |
+| [*] `/taskname` | The name of the scheduled task                                            |
+| `/folder`       | Folder to store the scheduled task (default: `\\`)                        |
+| `/remoteserver` | Hostname or IP address of a remote computer                               |
+| `/technique`    | Evasion technique (`hide` for hidden tasks)                               |
 
-`ScheduleRunner.exe /method:create /taskname:Cleanup /trigger:daily /starttime:23:30 /program:calc.exe /description:"Some description" /author:netero1010`
+### [*] Required Fields
 
-**Create a scheduled task called "Cleanup" that will be executed every 4 hours on a remote server**
+## Options for Scheduled Task Execution (/method:run)
 
-`ScheduleRunner.exe /method:create /taskname:Cleanup /trigger:hourly /modifier:4 /program:rundll32.exe /argument:c:\temp\payload.dll /remoteserver:TARGET-PC01`
+Execute a scheduled task:
 
-**Delete a scheduled task called "Cleanup"**
+| **Method**     | **Function**                                                              |
+| -------------- | ------------------------------------------------------------------------- |
+| [*] `/taskname` | The name of the scheduled task                                            |
+| `/folder`       | Folder to store the scheduled task (default: `\\`)                        |
+| `/remoteserver` | Hostname or IP address of a remote computer                               |
 
-`ScheduleRunner.exe /method:delete /taskname:Cleanup`
+### [*] Required Fields
 
-**Execute a scheduled task called "Cleanup"**
+## Options for Scheduled Task Query (/method:query)
 
-`ScheduleRunner.exe /method:run /taskname:Cleanup`
+Query details for a specific task:
 
-**Query details for a scheduled task called "Cleanup" under "\Microsoft\Windows\CertificateServicesClient" folder on a remote server**
+| **Method**     | **Function**                                                              |
+| -------------- | ------------------------------------------------------------------------- |
+| `/taskname`    | The name of the scheduled task                                            |
+| `/folder`       | Folder to store the scheduled task (default: `\\`)                        |
+| `/remoteserver` | Hostname or IP address of a remote computer                               |
 
-`ScheduleRunner.exe /method:query /taskname:Cleanup /folder:\Microsoft\Windows\CertificateServicesClient /remoteserver:TARGET-PC01`
+### [*] Required Fields
 
-**Query all scheduled tasks under a specific folder "\Microsoft\Windows\CertificateServicesClient" on a remote server**
+## Options for Scheduled Task Lateral Movement (/method:move)
 
-`ScheduleRunner.exe /method:query /folder:\Microsoft\Windows\CertificateServicesClient /remoteserver:TARGET-PC01`
+Perform lateral movement by creating, running, and deleting tasks on a remote server:
 
-**Query all sub-folders in scheduled task**
+| **Method**     | **Function**                                                              |
+| -------------- | ------------------------------------------------------------------------- |
+| [*] `/taskname` | The name of the scheduled task                                            |
+| [*] `/program`  | Program to execute when the task runs                                     |
+| [*] `/remoteserver` | Hostname or IP address of a remote computer                            |
+| `/trigger`      | Schedule type: `minute`, `hourly`, `daily`, `weekly`, `onstart`, `onlogon`, `onidle` |
+| `/modifier`     | Frequency modifier for certain schedule types (e.g., `1-1439 minutes`)   |
+| `/starttime`    | Start time for daily schedules (e.g., `23:30`)                            |
+| `/argument`     | Command line arguments for the program                                   |
+| `/folder`       | Folder to store the scheduled task (default: `\\`)                        |
+| `/workingdir`   | Working directory for task execution                                     |
+| `/author`       | Author of the scheduled task                                              |
+| `/description`  | Description of the scheduled task                                        |
+| `/user`         | User account to run the task                                              |
 
-`ScheduleRunner.exe /method:queryfolders`
+### [*] Required Fields
 
-**Perform lateral movement using scheduled task to a remote server using a specific user account**
+## Example Usage
 
-`ScheduleRunner.exe /method:move /taskname:Demo /remoteserver:TARGET-PC01 /program:rundll32.exe /argument:c:\temp\payload.dll /user:netero1010`
+Here are some example commands for creating, querying, deleting, and moving scheduled tasks:
 
-**Create a scheduled task called "Cleanup" using hiding scheduled task technique:**
+- **Create a scheduled task "Cleanup" that runs daily at 11:30 p.m.**
+  
+  ```bash
+  ScheduleRunner.exe /method:create /taskname:Cleanup /trigger:daily /starttime:23:30 /program:calc.exe /description:"Some description" /author:netero1010
+  ```
 
-`ScheduleRunner.exe /method:create /taskname:Cleanup /trigger:daily /starttime:23:30 /program:calc.exe /description:"Some description" /author:netero1010 /technique:hide`
+- **Create a scheduled task "Cleanup" every 4 hours on a remote server.**
 
-**Delete a scheduled task called "Cleanup" that used hiding scheduled task technique:**
+  ```bash
+  ScheduleRunner.exe /method:create /taskname:Cleanup /trigger:hourly /modifier:4 /program:rundll32.exe /argument:c:\temp\payload.dll /remoteserver:TARGET-PC01
+  ```
 
-`ScheduleRunner.exe /method:delete /taskname:Cleanup /technique:hide`
+- **Delete a scheduled task "Cleanup".**
+
+  ```bash
+  ScheduleRunner.exe /method:delete /taskname:Cleanup
+  ```
+
+- **Execute the scheduled task "Cleanup".**
+
+  ```bash
+  ScheduleRunner.exe /method:run /taskname:Cleanup
+  ```
 
 ## Hiding Scheduled Task Technique
-This technique was used by threat actor - HAFNIUM and discovered by Microsoft recently. It aims to make the scheduled task unqueriable by tools and unseeable by Task Scheduler.
 
-To use this technique, you are required to have "NT AUTHORITY/SYSTEM" and ScheduleRunner will do the following for you:
-1. Delete "SD" value from "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\\[task name]"
-2. Delete scheduled task XML file "C:\Windows\System32\Tasks\\[task name]"
+This technique, used by **HAFNIUM** malware, hides the task from Task Scheduler and makes it unqueriable by regular tools. The following actions are performed to hide a task:
 
-To remove scheduled task that is created using this technique require to add "/technique:hide" in the delete method to remove it properly.
+1. Delete the "SD" value from `HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\[task name]`
+2. Remove the XML file located at `C:\Windows\System32\Tasks\[task name]`
 
-### Disadvantage of this technique:
-The task will continue to run util next system reboot even if the task is deleted via registry. Therefore, it is better not to use this technique in server for your operation.
+### Limitations
+
+The task remains active until the next system reboot, even after deletion. Avoid using this technique on servers that will be rebooted frequently.
 
 ### Demo
+
 ![HowTo](https://github.com/netero1010/ScheduleRunner/raw/main/hiding_scheduled_task.png)
 
-## Library and Reference Used:
-| Library | Link |
-| ------------ | ------------ |
-| TaskScheduler | https://github.com/dahall/TaskScheduler |
+## Libraries and References Used
 
-| Reference | Link |
-| ------------ | ------------ |
-| SharpPersist | https://github.com/mandiant/SharPersist |
-| Hiding scheduled task technique | https://www.microsoft.com/security/blog/2022/04/12/tarrask-malware-uses-scheduled-tasks-for-defense-evasion/ |
+| **Library**     | **Link**                                                                  |
+| --------------  | ------------------------------------------------------------------------- |
+| `TaskScheduler` | [GitHub - TaskScheduler](https://github.com/dahall/TaskScheduler)         |
+
+| **Reference**   | **Link**                                                                  |
+| --------------  | ------------------------------------------------------------------------- |
+| `SharpPersist`  | [GitHub - SharpPersist](https://github.com/mandiant/SharPersist)          |
+| `Hiding Technique` | [Microsoft Blog on Tarrask](https://www.microsoft.com/security/blog/2022/04/12/tarrask-malware-uses-scheduled-tasks-for-defense-evasion/) |
+
+---
+
+## Contribution
+
+Feel free to fork this repository and contribute. For issues, questions, or suggestions, please use the [Issues](https://github.com/netero1010/ScheduleRunner/issues) tab.

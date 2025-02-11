@@ -1,61 +1,57 @@
+using System;
 using System.Collections.Generic;
 
 namespace ScheduleRunner
 {
     class Program
     {
-        private static string method = null;
-        private static string taskName = null;
-        private static string folder = null;
-        private static string workingDirectory = null;
-        private static string author = null;
-        private static string description = null;
-        private static string trigger = null;
-        private static string program = null;
-        private static string agrument = null;
-        private static string user = null;
-        private static string modifier = null;
-        private static string startTime = null;
-        private static string remoteServer = null;
-        private static bool hide = false;
+        private static string method;
+        private static string taskName;
+        private static string folder;
+        private static string workingDirectory;
+        private static string author;
+        private static string description;
+        private static string trigger;
+        private static string program;
+        private static string argument;
+        private static string user;
+        private static string modifier;
+        private static string startTime;
+        private static string remoteServer;
+        private static bool hide;
 
-        static void Main(string[] args) {
+        static void Main(string[] args)
+        {
             if (args.Length > 0)
             {
+                // Display help if requested
                 if (args[0] == "/help" || args[0] == "-h" || args[0] == "/h" || args[0] == "help")
                 {
                     Helper.PrintHelp();
                     return;
                 }
+
+                // Parse arguments into a dictionary
                 Dictionary<string, string> argsParam = Helper.ParseArgs(args);
                 if (argsParam == null)
                     return;
-                if (argsParam.ContainsKey("method"))
-                    method = argsParam["method"];
-                if (argsParam.ContainsKey("taskname"))
-                    taskName = argsParam["taskname"];
-                if (argsParam.ContainsKey("folder"))
-                    folder = argsParam["folder"];
-                if (argsParam.ContainsKey("workingdir"))
-                    workingDirectory = argsParam["workingdir"];
-                if (argsParam.ContainsKey("author"))
-                    author = argsParam["author"];
-                if (argsParam.ContainsKey("description"))
-                    description = argsParam["description"];
-                if (argsParam.ContainsKey("trigger"))
-                    trigger = argsParam["trigger"];
-                if (argsParam.ContainsKey("program"))
-                    program = argsParam["program"];
-                if (argsParam.ContainsKey("argument"))
-                    agrument = argsParam["argument"];
-                if (argsParam.ContainsKey("user"))
-                    user = argsParam["user"];
-                if (argsParam.ContainsKey("modifier"))
-                    modifier = argsParam["modifier"];
-                if (argsParam.ContainsKey("starttime"))
-                    startTime = argsParam["starttime"];
-                if (argsParam.ContainsKey("remoteserver"))
-                    remoteServer = argsParam["remoteserver"];
+
+                // Map the parsed arguments to corresponding variables
+                method = argsParam.GetValueOrDefault("method");
+                taskName = argsParam.GetValueOrDefault("taskname");
+                folder = argsParam.GetValueOrDefault("folder");
+                workingDirectory = argsParam.GetValueOrDefault("workingdir");
+                author = argsParam.GetValueOrDefault("author");
+                description = argsParam.GetValueOrDefault("description");
+                trigger = argsParam.GetValueOrDefault("trigger");
+                program = argsParam.GetValueOrDefault("program");
+                argument = argsParam.GetValueOrDefault("argument");
+                user = argsParam.GetValueOrDefault("user");
+                modifier = argsParam.GetValueOrDefault("modifier");
+                startTime = argsParam.GetValueOrDefault("starttime");
+                remoteServer = argsParam.GetValueOrDefault("remoteserver");
+
+                // Handle the "technique" argument for hide flag
                 if (argsParam.ContainsKey("technique"))
                 {
                     string technique = argsParam["technique"];
@@ -63,12 +59,13 @@ namespace ScheduleRunner
                         hide = true;
                 }
 
-                new TaskManager(method, taskName, folder, workingDirectory, author, description, trigger, program, agrument, user, modifier, startTime, remoteServer, hide);
+                // Create a new TaskManager instance
+                new TaskManager(method, taskName, folder, workingDirectory, author, description, trigger, program, argument, user, modifier, startTime, remoteServer, hide);
             }
             else
             {
+                // If no arguments are passed, display help
                 Helper.PrintHelp();
-                return;
             }
         }
     }
