@@ -1,0 +1,10 @@
+# To get started with Dependabot version updates for NuGet, specify the package ecosystem and manifest location.
+# See the documentation for all configuration options: 
+# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+updates:
+  - package-ecosystem: "nuget" # NuGet is the package ecosystem used
+    directory: "/" # Location of the package manifests, usually the root of the repository
+    schedule:
+      interval: "weekly" # Frequency of updates (can be "daily", "weekly", or "monthly")
